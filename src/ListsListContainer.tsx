@@ -1,6 +1,6 @@
 import React, { MouseEvent } from 'react';
 import { Button } from 'react-bootstrap';
-import { useLists, ListsResponse } from './ListsService';
+import { useLists } from './ListsService';
 
 export interface IListsListContainerProps {
   handleOnClick: (event: MouseEvent) => void;
@@ -18,16 +18,12 @@ const ListsListContainer = ({ handleOnClick }: IListsListContainerProps) => {
   }
 
   const listItems = response.lists.map((list) => (
-    <Button variant="link" block onClick={handleOnClick} id={list.id} key={list.id}>
-      {list.description} ({list.listItemsCount})
+    <Button block onClick={handleOnClick} id={list.id} key={list.id}>
+      {list.name} ({list.listItemsCount})
     </Button>
   ));
 
-  return (
-    <div>
-      <ul>{listItems}</ul>
-    </div>
-  );
+  return <div>{listItems}</div>;
 };
 
 export default ListsListContainer;

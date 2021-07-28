@@ -1,5 +1,7 @@
 import React from 'react';
 import { useList } from './ListsService';
+import { Button } from 'react-bootstrap';
+import ListItemInput from './ListItemInput';
 
 export interface IListContainerProps {
   listId?: string;
@@ -21,7 +23,20 @@ const ListContainer = ({ listId }: IListContainerProps) => {
   }
 
   if (response.list) {
-    return <div>{JSON.stringify(response.list)}</div>;
+    let key = 0;
+    const listItems = response.list.listItems?.map((listItem) => (
+      <Button block key={key++}>
+        {listItem.description} ({listItem.ticked ? 'ticked' : 'unticked'})
+      </Button>
+    ));
+    return (
+      <div>
+        <h1>{response.list.name}</h1>
+        <p>{response.list.description}</p>
+        <ListItemInput />
+        {listItems}
+      </div>
+    );
   }
 
   // Shouldn't happen, but this is the backstop.

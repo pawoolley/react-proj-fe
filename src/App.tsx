@@ -4,7 +4,7 @@ import ListsListContainer from './ListsListContainer';
 import ListContainer from './ListContainer';
 import { Col, Container, Row } from 'react-bootstrap';
 
-function App() {
+const App = () => {
   const [selectedListId, setSelectedListId] = useState<string>();
 
   const handleOnClick = (event: MouseEvent) => {
@@ -23,6 +23,6 @@ function App() {
       </Row>
     </Container>
   );
-}
+};
 
 export default App;

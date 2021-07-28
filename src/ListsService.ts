@@ -55,9 +55,9 @@ export function useLists(): ListsResponse {
         });
     },
     /*
-  N.B. useEffect fires whenever a component mounts or updates. Because we update the start in the useEffect code
+  N.B. useEffect fires whenever a component mounts or updates. Because we update the state in the useEffect code
   and thus update the component, we can get in to a loop. By providing a static empty array as the second argument,
-  which normally tells the useEffect hook to only fire an update when that argument changes, we can ensure the
+  which normally tells the useEffect hook to only fire an update when a property in that list changes, we can ensure the
   useEffect hook only fires on mount and not on update.
   */
     []
