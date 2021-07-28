@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useList } from './ListsService';
 import { Button } from 'react-bootstrap';
 import ListItemInput from './ListItemInput';
@@ -23,17 +23,25 @@ const ListContainer = ({ listId }: IListContainerProps) => {
   }
 
   if (response.list) {
+    const list = response.list;
+    const handleAddListItem = (text: string): void => {
+      // Shouldn't happen, but avoid adding null/undefined/empty text
+      if (text) {
+        console.log(`got text: ${text}`);
+      }
+    };
+
     let key = 0;
-    const listItems = response.list.listItems?.map((listItem) => (
+    const listItems = list.listItems?.map((listItem) => (
       <Button block key={key++}>
         {listItem.description} ({listItem.ticked ? 'ticked' : 'unticked'})
       </Button>
     ));
     return (
       <div>
-        <h1>{response.list.name}</h1>
-        <p>{response.list.description}</p>
-        <ListItemInput />
+        <h1>{list.name}</h1>
+        <p>{list.description}</p>
+        <ListItemInput handleAdd={handleAddListItem} />
         {listItems}
       </div>
     );

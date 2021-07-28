@@ -23,8 +23,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "format": "prettier --config .prettierrc.json 'src/**/*.ts' --write",
-    "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix"
+    "format": "prettier --config .prettierrc.json 'src/**/*.{js,ts,tsx}' --write",
+    "lint": "eslint 'src/**/*.{js,ts,tsx}' --quiet --fix",
+    "format-n-lint": "yarn format && yarn lint"
   },
   "browserslist": {
     "production": [
