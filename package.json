@@ -25,7 +25,9 @@
     "eject": "react-scripts eject",
     "format": "prettier --config .prettierrc.json 'src/**/*.{js,ts,tsx}' --write",
     "lint": "eslint 'src/**/*.{js,ts,tsx}' --quiet --fix",
-    "format-n-lint": "yarn format && yarn lint"
+    "format-n-lint": "yarn format && yarn lint",
+    "compile": "tsc",
+    "compile: watch": "tsc --watch"
   },
   "browserslist": {
     "production": [

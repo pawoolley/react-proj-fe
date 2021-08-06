@@ -1,4 +1,3 @@
-import { queryAllByAltText } from '@testing-library/react';
 import React from 'react';
 import { useState } from 'react';
 import { Button, FormControl } from 'react-bootstrap';
