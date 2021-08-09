@@ -15,6 +15,7 @@ export type List = {
 
 export type ListResponse = {
   list?: List;
+  setList: (list: List) => void;
   loading: boolean;
   error?: Error;
 };
@@ -67,9 +68,13 @@ export function useLists(): ListsResponse {
 }
 
 export function useList(id: string | undefined): ListResponse {
-  const [response, setResponse] = useState<ListResponse>({
-    loading: true,
-  });
+  // const [response, setResponse] = useState<ListResponse>({
+  //   loading: true,
+  // });
+
+  const [list, setList] = useState<List | undefined>();
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState();
 
   useEffect(() => {
     if (id) {
@@ -83,20 +88,29 @@ export function useList(id: string | undefined): ListResponse {
         })
         // then, update the state with the response.
         .then((data) => {
-          setResponse({
-            loading: false,
-            list: data,
-          });
+          // setResponse({
+          //   loading: false,
+          //   list: data,
+          // });
+          setList(data);
+          setLoading(false);
         })
         // report errors.
         .catch((error) => {
-          setResponse({
-            loading: false,
-            error: error,
-          });
+          // setResponse({
+          //   loading: false,
+          //   error: error,
+          // });
+          setLoading(false);
+          setError(error);
         });
     }
   }, [id]);
 
-  return response;
+  return {
+    list,
+    loading,
+    error,
+    setList,
+  };
 }

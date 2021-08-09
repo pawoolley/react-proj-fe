@@ -1,5 +1,4 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Button, FormControl } from 'react-bootstrap';
 
 export interface IListContainerProps {
@@ -17,7 +16,7 @@ const ListItemInput = (props: IListContainerProps) => {
     setAddDisabled(target.value.length == 0);
   };
 
-  const handleOnClick = (e: React.MouseEvent): void => {
+  const handleOnClick = (): void => {
     const textBox = document.getElementById(textBoxId) as HTMLInputElement;
     props.handleAdd(textBox.value);
   };
