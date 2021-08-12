@@ -11,6 +11,8 @@ export type List = {
   description: string;
   listItemsCount: number;
   listItems?: ListItem[];
+  createdAt: string;
+  updatedAt?: string;
 };
 
 export type ListResponse = {
@@ -28,7 +30,7 @@ export type ListsResponse = {
 
 const BASE_URL = 'http://localhost:8080';
 
-export function useLists(): ListsResponse {
+export const useLists = (): ListsResponse => {
   const [response, setResponse] = useState<ListsResponse>({
     loading: true,
   });
@@ -65,13 +67,9 @@ export function useLists(): ListsResponse {
   );
 
   return response;
-}
+};
 
-export function useList(id: string | undefined): ListResponse {
-  // const [response, setResponse] = useState<ListResponse>({
-  //   loading: true,
-  // });
-
+export const useList = (id: string | undefined): ListResponse => {
   const [list, setList] = useState<List | undefined>();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState();
@@ -88,19 +86,11 @@ export function useList(id: string | undefined): ListResponse {
         })
         // then, update the state with the response.
         .then((data) => {
-          // setResponse({
-          //   loading: false,
-          //   list: data,
-          // });
           setList(data);
           setLoading(false);
         })
         // report errors.
         .catch((error) => {
-          // setResponse({
-          //   loading: false,
-          //   error: error,
-          // });
           setLoading(false);
           setError(error);
         });
@@ -113,4 +103,21 @@ export function useList(id: string | undefined): ListResponse {
     error,
     setList,
   };
-}
+};
+
+export const updateList = (list: List) => {
+  list.updatedAt = new Date().toISOString();
+  fetch(`${BASE_URL}/lists/${list.id}`, {
+    method: 'PUT',
+    body: JSON.stringify(list),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((res) => {
+      console.log(`updated list: ${list.id}`);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+};

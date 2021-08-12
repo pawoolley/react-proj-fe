@@ -1,7 +1,10 @@
-import React from 'react';
-import { useList } from './ListsService';
+import React, { useEffect, useState } from 'react';
+import { List, updateList as updateListBE, useList } from './ListsService';
 import ListItemInput from './ListItemInput';
-import ListItems from './ListItems';
+import ListItem from './ListItem';
+import * as _ from 'lodash';
+import { Button, Col, Container, Row } from 'react-bootstrap';
+import './ListContainer.css';
 
 export interface IListContainerProps {
   listId?: string;
@@ -9,6 +12,30 @@ export interface IListContainerProps {
 
 const ListContainer = ({ listId }: IListContainerProps) => {
   const { list, setList, loading, error } = useList(listId);
+  const [currentListId, setCurrentListId] = useState<string>();
+  const [isFirstUpdate, setFirstUpdate] = useState(true);
+  const [listBeforeUpdate, setListBeforeUpdate] = useState<List | undefined>();
+  const [listHasChanged, setListHashChanged] = useState<boolean>(false);
+
+  const handleChangeOfList = () => {
+    console.log(`Changing from ${currentListId} to ${listId}`);
+    if (listHasChanged) {
+      console.warn(`Unsaved changes!!!`);
+    }
+    // Reset these states.
+    setFirstUpdate(true);
+    setListBeforeUpdate(undefined);
+    setListHashChanged(false);
+  };
+
+  // Keep tabs on the list that the component has been asked to show.
+  useEffect(() => {
+    // Detect if this component update is changing the list that is displayed.
+    if (listId && currentListId && currentListId !== listId) {
+      handleChangeOfList();
+    }
+    setCurrentListId(listId);
+  }, [listId]);
 
   if (!listId) {
     return <div>Select a list.</div>;
@@ -22,26 +49,75 @@ const ListContainer = ({ listId }: IListContainerProps) => {
     return <div>{error.message}</div>;
   }
 
+  const getCopyOfCurrentList = (): List => _.cloneDeep(list) as List;
+
+  const updateList = (updatedList: List) => {
+    if (isFirstUpdate) {
+      console.log('first update');
+      setFirstUpdate(false);
+      setListBeforeUpdate(getCopyOfCurrentList());
+    }
+    updatedList.listItemsCount = updatedList.listItems ? updatedList.listItems?.length : 0;
+    setList(updatedList);
+    const listHasChanged = !_.isEqual(updatedList, listBeforeUpdate);
+    setListHashChanged(listHasChanged);
+  };
+
   const handleAddListItem = (text: string): void => {
     // Shouldn't happen, but avoid adding null/undefined/empty text
     if (text) {
       console.log(`got text: ${text}`);
-      const updatedList = Object.assign({}, list);
+      const updatedList = getCopyOfCurrentList();
       updatedList?.listItems?.push({
         description: text,
         ticked: true,
       });
-      setList(updatedList);
+      updateList(updatedList);
     }
   };
 
+  const handleDeleteListItem = (index: number) => {
+    console.log(`deleting list item index ${index}`);
+    const updatedList = getCopyOfCurrentList();
+    updatedList.listItems?.splice(index, 1);
+    updateList(updatedList);
+  };
+
+  const handleSaveList = () => {
+    if (list) {
+      updateListBE(list);
+    }
+  };
+
+  let index = 0;
+  const listItems = list?.listItems?.map((listItem) => (
+    <ListItem
+      key={index}
+      index={index++}
+      description={listItem.description}
+      ticked={listItem.ticked}
+      handleDelete={handleDeleteListItem}
+    />
+  ));
+
   return (
-    <div>
-      <h1>{list?.name}</h1>
-      <p>{list?.description}</p>
+    <>
+      <Container>
+        <Row>
+          <Col>
+            <h1>{list?.name}</h1>
+            <p>{list?.description}</p>
+          </Col>
+          <Col md="auto" className="listcontainer-save-container container">
+            <Button disabled={!listHasChanged} onClick={handleSaveList}>
+              Save
+            </Button>
+          </Col>
+        </Row>
+      </Container>
       <ListItemInput handleAdd={handleAddListItem} />
-      <ListItems list={list} />
-    </div>
+      {listItems}
+    </>
   );
 };
 

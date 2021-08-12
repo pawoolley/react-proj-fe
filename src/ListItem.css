@@ -1,0 +1,14 @@
+.listitem-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 0.375rem;
+}
+
+.listitem-text {
+    flex-grow: 1
+}
+
+.listitem-delete {
+    flex-grow: 0
+}
