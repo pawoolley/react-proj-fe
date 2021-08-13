@@ -3,11 +3,12 @@ import { Button } from 'react-bootstrap';
 import { useLists } from './ListsService';
 
 export interface IListsListContainerProps {
+  updatedAt: string;
   handleOnClick: (event: MouseEvent) => void;
 }
 
-const ListsListContainer = ({ handleOnClick }: IListsListContainerProps) => {
-  const response = useLists();
+const ListsListContainer = ({ updatedAt, handleOnClick }: IListsListContainerProps) => {
+  const response = useLists(updatedAt);
 
   if (response.loading) {
     return <div>Loading...</div>;
@@ -23,7 +24,7 @@ const ListsListContainer = ({ handleOnClick }: IListsListContainerProps) => {
     </Button>
   ));
 
-  return <div>{listItems}</div>;
+  return <>{listItems}</>;
 };
 
 export default ListsListContainer;

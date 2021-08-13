@@ -30,11 +30,10 @@ export type ListsResponse = {
 
 const BASE_URL = 'http://localhost:8080';
 
-export const useLists = (): ListsResponse => {
+export const useLists = (updatedAt: string): ListsResponse => {
   const [response, setResponse] = useState<ListsResponse>({
     loading: true,
   });
-
   useEffect(
     () => {
       fetch(`${BASE_URL}/lists`)
@@ -63,7 +62,7 @@ export const useLists = (): ListsResponse => {
   which normally tells the useEffect hook to only fire an update when a property in that list changes, we can ensure the
   useEffect hook only fires on mount and not on update.
   */
-    []
+    [updatedAt]
   );
 
   return response;
@@ -113,11 +112,7 @@ export const updateList = (list: List) => {
     headers: {
       'Content-Type': 'application/json',
     },
-  })
-    .then((res) => {
-      console.log(`updated list: ${list.id}`);
-    })
-    .catch((error) => {
-      console.error(error);
-    });
-};
+  }).catch((error) => {
+    console.error(error);
+  });
+};;

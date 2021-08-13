@@ -8,9 +8,10 @@ import './ListContainer.css';
 
 export interface IListContainerProps {
   listId?: string;
+  handleOnSave: () => void;
 }
 
-const ListContainer = ({ listId }: IListContainerProps) => {
+const ListContainer = ({ listId, handleOnSave }: IListContainerProps) => {
   const { list, setList, loading, error } = useList(listId);
   const [currentListId, setCurrentListId] = useState<string>();
   const [isFirstUpdate, setFirstUpdate] = useState(true);
@@ -18,7 +19,6 @@ const ListContainer = ({ listId }: IListContainerProps) => {
   const [listHasChanged, setListHashChanged] = useState<boolean>(false);
 
   const handleChangeOfList = () => {
-    console.log(`Changing from ${currentListId} to ${listId}`);
     if (listHasChanged) {
       console.warn(`Unsaved changes!!!`);
     }
@@ -53,7 +53,6 @@ const ListContainer = ({ listId }: IListContainerProps) => {
 
   const updateList = (updatedList: List) => {
     if (isFirstUpdate) {
-      console.log('first update');
       setFirstUpdate(false);
       setListBeforeUpdate(getCopyOfCurrentList());
     }
@@ -66,7 +65,6 @@ const ListContainer = ({ listId }: IListContainerProps) => {
   const handleAddListItem = (text: string): void => {
     // Shouldn't happen, but avoid adding null/undefined/empty text
     if (text) {
-      console.log(`got text: ${text}`);
       const updatedList = getCopyOfCurrentList();
       updatedList?.listItems?.push({
         description: text,
@@ -77,7 +75,6 @@ const ListContainer = ({ listId }: IListContainerProps) => {
   };
 
   const handleDeleteListItem = (index: number) => {
-    console.log(`deleting list item index ${index}`);
     const updatedList = getCopyOfCurrentList();
     updatedList.listItems?.splice(index, 1);
     updateList(updatedList);
@@ -86,6 +83,8 @@ const ListContainer = ({ listId }: IListContainerProps) => {
   const handleSaveList = () => {
     if (list) {
       updateListBE(list);
+      setListHashChanged(false);
+      handleOnSave();
     }
   };
 
