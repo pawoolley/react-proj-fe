@@ -4,10 +4,10 @@ import { useLists } from './ListsService';
 
 export interface IListsListContainerProps {
   updatedAt: string;
-  handleOnClick: (event: MouseEvent) => void;
+  onListClick: (event: MouseEvent) => void;
 }
 
-const ListsListContainer = ({ updatedAt, handleOnClick }: IListsListContainerProps) => {
+const ListsListContainer = ({ updatedAt, onListClick }: IListsListContainerProps) => {
   const response = useLists(updatedAt);
 
   if (response.loading) {
@@ -19,7 +19,7 @@ const ListsListContainer = ({ updatedAt, handleOnClick }: IListsListContainerPro
   }
 
   const listItems = response.lists.map((list) => (
-    <Button block onClick={handleOnClick} id={list.id} key={list.id}>
+    <Button block onClick={onListClick} id={list.id} key={list.id}>
       {list.name} ({list.listItemsCount})
     </Button>
   ));

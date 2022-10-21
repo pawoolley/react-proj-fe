@@ -10,11 +10,11 @@ const App = () => {
   const [selectedListId, setSelectedListId] = useState<string>();
   const [updatedAt, setUpdatedAt] = useState<string>(getNow());
 
-  const handleOnClick = (event: MouseEvent) => {
+  const handleOnListClick = (event: MouseEvent) => {
     setSelectedListId(event.currentTarget.id);
   };
 
-  const handleOnSave = () => {
+  const handleOnListSave = () => {
     setUpdatedAt(getNow());
   };
 
@@ -22,10 +22,10 @@ const App = () => {
     <Container fluid className="app-container">
       <Row>
         <Col className="lists-list-container" xs={4}>
-          <ListsListContainer updatedAt={updatedAt} handleOnClick={handleOnClick} />
+          <ListsListContainer updatedAt={updatedAt} onListClick={handleOnListClick} />
         </Col>
         <Col className="list-container" xs={8}>
-          <ListContainer listId={selectedListId} handleOnSave={handleOnSave} />
+          <ListContainer listId={selectedListId} onListSave={handleOnListSave} />
         </Col>
       </Row>
     </Container>

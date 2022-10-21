@@ -3,39 +3,46 @@ import { List, updateList as updateListBE, useList } from './ListsService';
 import ListItemInput from './ListItemInput';
 import ListItem from './ListItem';
 import * as _ from 'lodash';
-import { Button, Col, Container, Row } from 'react-bootstrap';
+import { Button, Col, Container, Modal, Row } from 'react-bootstrap';
 import './ListContainer.css';
 
 export interface IListContainerProps {
   listId?: string;
-  handleOnSave: () => void;
+  onListSave: () => void;
 }
 
-const ListContainer = ({ listId, handleOnSave }: IListContainerProps) => {
+const ListContainer = ({ listId, onListSave }: IListContainerProps) => {
   const { list, setList, loading, error } = useList(listId);
   const [currentListId, setCurrentListId] = useState<string>();
   const [isFirstUpdate, setFirstUpdate] = useState(true);
   const [listBeforeUpdate, setListBeforeUpdate] = useState<List | undefined>();
-  const [listHasChanged, setListHashChanged] = useState<boolean>(false);
+  const [listHasChanged, setListHasChanged] = useState<boolean>(false);
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState<boolean>(false);
 
-  const handleChangeOfList = () => {
-    if (listHasChanged) {
-      console.warn(`Unsaved changes!!!`);
-    }
-    // Reset these states.
-    setFirstUpdate(true);
-    setListBeforeUpdate(undefined);
-    setListHashChanged(false);
-  };
+  // const handleChangeOfList = () => {
+  //   if (listHasChanged) {
+  //     setHasUnsavedChanges(true);
+  //   }
+  //   // Reset these states.
+  //   setFirstUpdate(true);
+  //   setListBeforeUpdate(undefined);
+  //   setListHasChanged(false);
+  // };
 
   // Keep tabs on the list that the component has been asked to show.
   useEffect(() => {
     // Detect if this component update is changing the list that is displayed.
     if (listId && currentListId && currentListId !== listId) {
-      handleChangeOfList();
+      if (listHasChanged) {
+        setHasUnsavedChanges(true);
+      }
+      // Reset these states.
+      setFirstUpdate(true);
+      setListBeforeUpdate(undefined);
+      setListHasChanged(false);
     }
     setCurrentListId(listId);
-  }, [listId]);
+  }, [currentListId, listHasChanged, listId]);
 
   if (!listId) {
     return <div>Select a list.</div>;
@@ -58,8 +65,7 @@ const ListContainer = ({ listId, handleOnSave }: IListContainerProps) => {
     }
     updatedList.listItemsCount = updatedList.listItems ? updatedList.listItems?.length : 0;
     setList(updatedList);
-    const listHasChanged = !_.isEqual(updatedList, listBeforeUpdate);
-    setListHashChanged(listHasChanged);
+    setListHasChanged(!_.isEqual(updatedList, listBeforeUpdate));
   };
 
   const handleAddListItem = (text: string): void => {
@@ -83,9 +89,14 @@ const ListContainer = ({ listId, handleOnSave }: IListContainerProps) => {
   const handleSaveList = () => {
     if (list) {
       updateListBE(list);
-      setListHashChanged(false);
-      handleOnSave();
+      setListHasChanged(false);
+      setHasUnsavedChanges(false);
+      onListSave();
     }
+  };
+
+  const handleUnsavedChangesNo = () => {
+    setHasUnsavedChanges(false);
   };
 
   let index = 0;
@@ -101,13 +112,27 @@ const ListContainer = ({ listId, handleOnSave }: IListContainerProps) => {
 
   return (
     <>
+      <Modal show={hasUnsavedChanges}>
+        <Modal.Header closeButton>
+          <Modal.Title>Unsaved changes</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>List "{list?.name}" has unsaved changes. Save now?</Modal.Body>
+        <Modal.Footer>
+          <Button variant='secondary' onClick={handleUnsavedChangesNo}>
+            No
+          </Button>
+          <Button variant='primary' onClick={handleSaveList}>
+            Yes
+          </Button>
+        </Modal.Footer>
+      </Modal>
       <Container>
         <Row>
           <Col>
             <h1>{list?.name}</h1>
             <p>{list?.description}</p>
           </Col>
-          <Col md="auto" className="listcontainer-save-container container">
+          <Col md='auto' className='listcontainer-save-container container'>
             <Button disabled={!listHasChanged} onClick={handleSaveList}>
               Save
             </Button>

@@ -115,4 +115,4 @@ export const updateList = (list: List) => {
   }).catch((error) => {
     console.error(error);
   });
-};;
+};
