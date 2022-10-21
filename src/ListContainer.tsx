@@ -118,10 +118,10 @@ const ListContainer = ({ listId, onListSave }: IListContainerProps) => {
         </Modal.Header>
         <Modal.Body>List "{list?.name}" has unsaved changes. Save now?</Modal.Body>
         <Modal.Footer>
-          <Button variant='secondary' onClick={handleUnsavedChangesNo}>
+          <Button variant="secondary" onClick={handleUnsavedChangesNo}>
             No
           </Button>
-          <Button variant='primary' onClick={handleSaveList}>
+          <Button variant="primary" onClick={handleSaveList}>
             Yes
           </Button>
         </Modal.Footer>
@@ -132,7 +132,7 @@ const ListContainer = ({ listId, onListSave }: IListContainerProps) => {
             <h1>{list?.name}</h1>
             <p>{list?.description}</p>
           </Col>
-          <Col md='auto' className='listcontainer-save-container container'>
+          <Col md="auto" className="listcontainer-save-container container">
             <Button disabled={!listHasChanged} onClick={handleSaveList}>
               Save
             </Button>
