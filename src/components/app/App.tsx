@@ -1,4 +1,4 @@
-import React, { MouseEvent, useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import './App.css'
 import ListSelectorContainer from '../lists/ListSelectorContainer'
 import ListContainer from '../lists/ListContainer'
@@ -12,19 +12,6 @@ const App = () => {
   useEffect(() => {
     dispatch(getLists())
   }, [])
-
-  const getNow = () => new Date().toISOString()
-
-  const [selectedListId, setSelectedListId] = useState<string>()
-  const [updatedAt, setUpdatedAt] = useState<string>(getNow())
-
-  const handleOnListClick = (event: MouseEvent) => {
-    setSelectedListId(event.currentTarget.id)
-  }
-
-  const handleOnListSave = () => {
-    setUpdatedAt(getNow())
-  }
 
   return (
     <Container fluid className="app-container">
@@ -40,4 +27,4 @@ const App = () => {
   )
 }
 
-export default App;
+export default App
