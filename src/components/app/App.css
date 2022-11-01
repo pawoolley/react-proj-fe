@@ -1,15 +1,15 @@
 .app-container {
-    /* border-style: dotted; */
-    max-width: 1200px;
-    margin: 15px;
+  /* border-style: dotted; */
+  max-width: 1200px;
+  margin: 15px;
 }
 
 .lists-list-container {
-    /* border-style: solid; */
-    height: 100vh;
+  /* border-style: solid; */
+  height: 100vh;
 }
 
 .list-container {
-    /* border-style: solid; */
-    height: 100vh;
+  /* border-style: solid; */
+  height: 100vh;
 }

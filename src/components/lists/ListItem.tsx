@@ -1,10 +1,10 @@
-import './ListItem.css';
+import './ListItem.css'
 
 export interface IListItemProps {
-  index: number;
-  description: string;
-  ticked: boolean;
-  handleDelete: (index: number) => void;
+  index: number
+  description: string
+  ticked: boolean
+  handleDelete: (index: number) => void
 }
 
 const ListItem = ({ index, description, ticked, handleDelete }: IListItemProps) => {
@@ -17,7 +17,7 @@ const ListItem = ({ index, description, ticked, handleDelete }: IListItemProps) 
         X
       </button>
     </div>
-  );
-};
+  )
+}
 
-export default ListItem;
+export default ListItem
