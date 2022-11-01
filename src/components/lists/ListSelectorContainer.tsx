@@ -26,7 +26,7 @@ const ListSelectorContainer = () => {
 
   const listItems = lists.map((list) => {
     return (
-      <Button size="lg" onClick={() => onListClick(list.id)} id={list.id} key={list.id}>
+      <Button variant="outline-dark" size="lg" onClick={() => onListClick(list.id)} id={list.id} key={list.id}>
         {list.name} ({getListItemsCount(list)})
       </Button>
     )

@@ -7,6 +7,7 @@ import './ListContainer.css'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import { saveList, selectSelectedListId } from '../../features/lists/listsSlice'
 import _ from 'lodash'
+import { Save } from 'react-bootstrap-icons'
 
 const ListContainer = () => {
   const selectedListId = useAppSelector(selectSelectedListId)
@@ -99,8 +100,15 @@ const ListContainer = () => {
             <p>{currentList?.description}</p>
           </Col>
           <Col md="auto" className="listcontainer-save-container container">
-            <Button disabled={!listHasChanged} onClick={handleSaveList}>
-              Save
+            <Button
+              variant="outline-dark"
+              disabled={!listHasChanged}
+              onClick={handleSaveList}
+              data-toggle="tooltip"
+              data-placement="top"
+              title="Save"
+            >
+              <Save />
             </Button>
           </Col>
         </Row>

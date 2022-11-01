@@ -1,4 +1,6 @@
 import './ListItem.css'
+import { Button } from 'react-bootstrap'
+import { Trash } from 'react-bootstrap-icons'
 
 export interface IListItemProps {
   index: number
@@ -13,9 +15,16 @@ const ListItem = ({ index, description, ticked, handleDelete }: IListItemProps) 
       <div className="listitem-text">
         {description} ({ticked ? 'ticked' : 'unticked'})
       </div>
-      <button className="listitem-delete" onClick={() => handleDelete(index)}>
-        X
-      </button>
+      <Button
+        variant="outline-dark"
+        onClick={() => handleDelete(index)}
+        className="listitem-delete"
+        data-toggle="tooltip"
+        data-placement="top"
+        title="Delete"
+      >
+        <Trash />
+      </Button>
     </div>
   )
 }

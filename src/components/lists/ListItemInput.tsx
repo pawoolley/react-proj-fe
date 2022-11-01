@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Button, FormControl } from 'react-bootstrap'
 import './ListItemInput.css'
+import { PlusCircle } from 'react-bootstrap-icons'
 
 export interface IListContainerProps {
   /* Callback for when the Add button is clicked and the text in the input at that time. */
@@ -28,8 +29,15 @@ const ListItemInput = ({ handleAdd }: IListContainerProps) => {
   return (
     <div className="listiteminput-container container">
       <FormControl id={textBoxId} type="text" placeholder="Add a new list item" onKeyUp={handleOnKeyUp} />
-      <Button disabled={addDisabled} onClick={handleOnClick}>
-        Add
+      <Button
+        variant="outline-dark"
+        disabled={addDisabled}
+        onClick={handleOnClick}
+        data-toggle="tooltip"
+        data-placement="top"
+        title="Add"
+      >
+        <PlusCircle />
       </Button>
     </div>
   )
