@@ -47,7 +47,7 @@ const ListContainer = () => {
     }
   }
 
-  const handleDeleteListItem = (index: number) => {
+  const handleListItemDelete = (index: number) => {
     const copyOfCurrentList = getCopyOfCurrentList()
     copyOfCurrentList.listItems?.splice(index, 1)
     updateList(copyOfCurrentList)
@@ -64,6 +64,15 @@ const ListContainer = () => {
     setListHasChanged(false)
   }
 
+  const handleListItemChecked = (event: React.ChangeEvent<HTMLInputElement>, index: number) => {
+    const copyOfCurrentList = getCopyOfCurrentList()
+    const listItem = copyOfCurrentList.listItems?.[index]
+    if (listItem) {
+      listItem.ticked = event.target.checked
+      updateList(copyOfCurrentList)
+    }
+  }
+
   let index = 0
   const listItems = currentList?.listItems?.map((listItem) => (
     <ListItem
@@ -71,7 +80,8 @@ const ListContainer = () => {
       index={index++}
       description={listItem.description}
       ticked={listItem.ticked}
-      handleDelete={handleDeleteListItem}
+      handleDelete={handleListItemDelete}
+      handleChecked={handleListItemChecked}
     />
   ))
 

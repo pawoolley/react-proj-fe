@@ -7,6 +7,11 @@
 
 .listitem-text {
   flex-grow: 1;
+  padding: 0 0.3rem;
+}
+
+.listitem-text.ticked {
+  text-decoration: line-through;
 }
 
 .listitem-delete {
