@@ -28,7 +28,13 @@ const ListItemInput = ({ handleAdd }: IListContainerProps) => {
 
   return (
     <div className="listiteminput-container container">
-      <FormControl id={textBoxId} type="text" placeholder="Add a new list item" onKeyUp={handleOnKeyUp} />
+      <FormControl
+        className="listiteminput-input"
+        id={textBoxId}
+        type="text"
+        placeholder="Add a new list item"
+        onKeyUp={handleOnKeyUp}
+      />
       <Button
         variant="outline-dark"
         disabled={addDisabled}
