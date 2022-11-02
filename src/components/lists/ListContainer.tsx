@@ -41,7 +41,7 @@ const ListContainer = () => {
       const copyOfCurrentList = getCopyOfCurrentList()
       copyOfCurrentList?.listItems?.push({
         description: text,
-        ticked: true,
+        ticked: false,
       })
       updateList(copyOfCurrentList)
     }

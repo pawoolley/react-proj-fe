@@ -26,6 +26,12 @@ const ListItemInput = ({ handleAdd }: IListContainerProps) => {
     setAddDisabled(true)
   }
 
+  const handleOnKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      handleOnClick()
+    }
+  }
+
   return (
     <div className="listiteminput-container container">
       <FormControl
@@ -34,6 +40,7 @@ const ListItemInput = ({ handleAdd }: IListContainerProps) => {
         type="text"
         placeholder="Add a new list item"
         onKeyUp={handleOnKeyUp}
+        onKeyDown={handleOnKeyDown}
       />
       <Button
         variant="outline-dark"
